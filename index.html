@@ -143,11 +143,10 @@
   .returns svg { width: 20px; height: 20px; }
   .specs { font-size: 13px; text-align: center; opacity: .7; letter-spacing: 0; }
 
-  /* ---------- Upsell: Adventure Cards ---------- */
+  /* ---------- Upsell: Discovery Cards ---------- */
   .upsell .up { display: none; }
   .upsell[data-variant="a"] .up-a,
-  .upsell[data-variant="b"] .up-b,
-  .upsell[data-variant="c"] .up-c { display: grid; }
+  .upsell[data-variant="b"] .up-b { display: grid; }
   .up-title { display: block; white-space: nowrap; font-size: 16px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; }
   .up-sub { display: block; font-size: 13.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; opacity: .85; }
   .up-price { display: inline-flex; align-items: baseline; gap: 6px; font-weight: 900; letter-spacing: 0; white-space: nowrap; }
@@ -167,67 +166,52 @@
   .up-add.is-on .t-added { display: inline; }
   .up-add.is-on { background: #e8f6ea; color: #1f7a35; border-color: #bfe3c6; }
 
-  /* A: checkbox row — check top-right, price bottom-right */
-  .up-a {
-    grid-template-columns: 64px 1fr auto; grid-template-rows: auto auto auto;
-    gap: 4px 12px; padding: 14px 16px; border: 2px solid var(--line); border-radius: 16px; cursor: pointer;
-    transition: border-color .2s ease, background .2s ease;
+  /* Fan of three simple cards (shared by A and B) */
+  .up-fan { position: relative; width: 96px; height: 100px; }
+  .up-fan img {
+    position: absolute; top: 16px; left: 22px; width: 50px; height: auto; border-radius: 4px;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,.2)); transition: transform .3s ease;
   }
-  .up-a:hover { border-color: rgba(53,53,53,.3); }
-  .up-thumb { grid-column: 1; grid-row: 1 / 4; align-self: center; width: 64px; height: 64px; object-fit: cover; border-radius: 12px; background: #f4f4f4; }
+  .up-fan img:nth-child(1) { transform: translateX(-19px) rotate(-15deg); }
+  .up-fan img:nth-child(2) { transform: translateX(19px) rotate(13deg); }
+  .up-fan img:nth-child(3) { width: 58px; left: 19px; top: 8px; transform: rotate(-3deg); }
+  .up:hover .up-fan img:nth-child(1) { transform: translateX(-24px) rotate(-20deg); }
+  .up:hover .up-fan img:nth-child(2) { transform: translateX(24px) rotate(18deg); }
+  .up:hover .up-fan img:nth-child(3) { transform: translateY(-3px) rotate(-3deg); }
+
+  /* A: checkbox — check top-right, price bottom-right */
+  .up-a {
+    grid-template-columns: 96px 1fr auto; grid-template-rows: auto 1fr auto;
+    gap: 4px 12px; padding: 16px; border: 2px solid transparent; border-radius: 18px;
+    background: var(--cream); cursor: pointer; transition: border-color .2s ease, background .2s ease;
+  }
+  .up-a .up-fan { grid-column: 1; grid-row: 1 / 4; align-self: center; }
   .up-a .up-body { display: contents; }
   .up-a .up-title { grid-column: 2; grid-row: 1; align-self: center; }
   .up-a .up-sub { grid-column: 2 / 4; grid-row: 2; }
   .up-a .up-more { grid-column: 2; grid-row: 3; justify-self: start; align-self: end; }
   .up-tick {
     grid-column: 3; grid-row: 1; justify-self: end; align-self: start;
-    width: 24px; height: 24px; border-radius: 7px; border: 2px solid rgba(53,53,53,.35);
+    width: 24px; height: 24px; border-radius: 7px; border: 2px solid rgba(53,53,53,.35); background: #fff;
     display: grid; place-items: center; color: transparent; transition: all .15s ease;
   }
   .up-tick svg { width: 16px; height: 16px; }
   .up-a .up-price { grid-column: 3; grid-row: 3; justify-self: end; align-self: end; }
-  .up-a:has(input:checked) { border-color: var(--yellow); background: #fffaeb; }
+  .up-a:hover { border-color: rgba(53,53,53,.12); }
+  .up-a:has(input:checked) { border-color: var(--yellow); background: #fff4d6; }
   .up-a:has(input:checked) .up-tick { background: var(--yellow); border-color: var(--yellow); color: var(--fg); }
   .up-a:has(input:focus-visible) { outline: 2px solid var(--fg); outline-offset: 2px; }
+  @media (max-width: 359px) { .up-a .up-title { white-space: normal; } }
 
-  /* B: fanned deck + button (button left, price right) */
+  /* B: button left, price right */
   .up-b {
-    grid-template-columns: 80px 1fr; grid-template-areas: "fan body" "side side";
-    gap: 16px 18px; padding: 20px 18px 18px; border-radius: 18px; background: var(--cream); align-items: center;
+    grid-template-columns: 96px 1fr; grid-template-areas: "fan body" "side side";
+    gap: 16px 14px; padding: 18px 18px 18px 16px; border-radius: 18px; background: var(--cream); align-items: center;
   }
-  .up-fan { grid-area: fan; position: relative; height: 92px; }
-  .up-fan img {
-    position: absolute; top: 6px; left: 14px; width: 54px; height: auto;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,.18)); transition: transform .3s ease;
-  }
-  .up-fan img:nth-child(1) { transform: rotate(-14deg) translateX(-10px); }
-  .up-fan img:nth-child(2) { transform: rotate(8deg) translateX(10px); }
-  .up-fan img:nth-child(3) { transform: rotate(-2deg); }
-  .up-b:hover .up-fan img:nth-child(1) { transform: rotate(-20deg) translateX(-14px); }
-  .up-b:hover .up-fan img:nth-child(2) { transform: rotate(14deg) translateX(14px); }
+  .up-b .up-fan { grid-area: fan; }
   .up-b .up-body { grid-area: body; display: grid; gap: 6px; justify-items: start; }
-  .up-badge {
-    font-size: 11px; font-weight: 900; letter-spacing: .03em; text-transform: uppercase;
-    background: var(--yellow); padding: 4px 9px; border-radius: 999px; margin-bottom: 2px;
-  }
   .up-b .up-side { grid-area: side; display: flex; align-items: center; justify-content: space-between; gap: 12px;
     border-top: 1px solid rgba(53,53,53,.1); padding-top: 16px; }
-
-  /* C: slowly drifting card strip (button left, how it works right) */
-  .up-c { gap: 10px; padding: 16px; border-radius: 16px; background: var(--blue); overflow: hidden; }
-  .up-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .up-marquee {
-    margin: 2px -16px 0; padding: 6px 0 8px; overflow: hidden;
-  }
-  .up-track { display: flex; width: max-content; animation: upDrift 60s linear infinite; }
-  .up-track img { flex: 0 0 72px; width: 72px; height: auto; margin-right: 4px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.12)); }
-  .up-marquee:hover .up-track { animation-play-state: paused; }
-  @keyframes upDrift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) {
-    .up-track { animation: none; }
-    .up-marquee { overflow-x: auto; }
-  }
-  .up-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 
   .atc-total { display: none; }
   .atc-total.show { display: inline; }
@@ -257,7 +241,7 @@
     display: flex; flex-direction: column; align-items: center; gap: 17px;
   }
   .sheet-text { padding: 0 24px; display: grid; gap: 8px; text-align: center; }
-  .sheet-text h3 { font-size: 30px; font-weight: 900; line-height: 1.1; letter-spacing: -0.05em; }
+  .sheet-text h3 { font-size: clamp(22px, 6.9vw, 30px); font-weight: 900; line-height: 1.1; letter-spacing: -0.05em; }
   .sheet-text p { font-size: 15px; font-weight: 600; line-height: 1.5; letter-spacing: -0.04em; }
 
   /* Categories: continuous slow drift, side to side */
@@ -265,20 +249,24 @@
   .cat-track { display: flex; width: max-content; animation: catDrift 45s linear infinite; }
   .cat-marquee:hover .cat-track, .cat-marquee:active .cat-track { animation-play-state: paused; }
   @keyframes catDrift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .cat { flex: 0 0 115px; margin-right: 9px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-  .cat-img { position: relative; width: 110px; height: 140px; }
-  .cat-img img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); max-width: none; }
+  .cat { flex: 0 0 112px; margin-right: 10px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .cat-img { width: 100px; }
+  .cat-img img {
+    display: block; width: 100px; height: auto; aspect-ratio: 480 / 645; object-fit: cover; border-radius: 5px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.16));
+  }
   .cat span { font-size: 13.4px; font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; text-align: center; white-space: nowrap; }
   @media (prefers-reduced-motion: reduce) {
     .cat-track { animation: none; }
     .cat-marquee { overflow-x: auto; scrollbar-width: none; }
   }
-  .sheet-done {
-    width: calc(100% - 50px); max-width: 343px; height: 46px; border-radius: 20px;
-    background: #dcdee2; color: var(--fg); font-size: 13px; font-weight: 900; letter-spacing: -0.05em;
-    text-transform: uppercase; box-shadow: 0 4px 13px rgba(0,0,0,.06); transition: background .2s ease;
+  .sheet-add {
+    width: calc(100% - 50px); max-width: 343px; height: 52px; border-radius: 22px;
+    background: var(--yellow); color: var(--fg); font-size: 17px; font-weight: 900; letter-spacing: -0.02em;
+    transition: filter .2s ease, background .2s ease, color .2s ease;
   }
-  .sheet-done:hover { background: #d0d3d8; }
+  .sheet-add:hover { filter: brightness(1.04); }
+  .sheet-add.is-on { background: #e8f6ea; color: #1f7a35; }
 
   /* ---------- Option switcher (design review only) ---------- */
   .opt-switch {
@@ -538,59 +526,37 @@
           <li><svg><use href="#i-check"/></svg>Smart play without screen time</li>
           <li><svg><use href="#i-check"/></svg>Curiosity-sparking stories</li>
         </ul>
-        <!-- Upsell: 50 Adventure Cards (3 design options, one shown at a time) -->
+        <!-- Upsell: 50 Discovery Cards (2 design options, one shown at a time) -->
         <div class="upsell" id="upsell" data-variant="a">
 
-          <!-- Option A: checkbox row, bundled into the main Add to cart -->
+          <!-- Option A: checkbox, bundled into the main Add to cart -->
           <label class="up up-a">
             <input type="checkbox" id="upCheck" class="sr-only">
-            <img class="up-thumb" src="img/cards/box-thumb.jpg" alt="" width="72" height="72">
+            <div class="up-fan" aria-hidden="true">
+              <img src="img/cards/discovery/italy-sm.webp" alt=""><img src="img/cards/discovery/space-sm.webp" alt=""><img src="img/cards/discovery/octopus-sm.webp" alt="">
+            </div>
             <span class="up-body">
-              <span class="up-title">50 Adventure Cards</span>
-              <span class="up-sub">Helps your child start the conversation.</span>
+              <span class="up-title">50 Discovery Cards</span>
+              <span class="up-sub">Stories, animals, countries, science, space &amp; more.</span>
               <button type="button" class="up-more" data-learn>Learn more</button>
             </span>
             <span class="up-tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="up-price"><s>$20</s><b>$10</b></span>
           </label>
 
-          <!-- Option B: fanned cards + its own Add button -->
+          <!-- Option B: its own Add button -->
           <div class="up up-b">
             <div class="up-fan" aria-hidden="true">
-              <img src="img/cards/s1.png" alt=""><img src="img/cards/s2.png" alt=""><img src="img/cards/s6.png" alt="">
+              <img src="img/cards/discovery/italy-sm.webp" alt=""><img src="img/cards/discovery/space-sm.webp" alt=""><img src="img/cards/discovery/octopus-sm.webp" alt="">
             </div>
             <div class="up-body">
-              <span class="up-badge">Special offer</span>
-              <span class="up-title">50 Adventure Cards</span>
-              <span class="up-sub">A new adventure every day.</span>
+              <span class="up-title">50 Discovery Cards</span>
+              <span class="up-sub">Stories, animals, countries, science, space &amp; more.</span>
               <button type="button" class="up-more" data-learn>Learn more</button>
             </div>
             <div class="up-side">
               <button type="button" class="up-add" data-up-add><span class="t-add">+ Add to order</span><span class="t-added">✓ Added</span></button>
               <span class="up-price"><s>$20</s><b>$10</b></span>
-            </div>
-          </div>
-
-          <!-- Option C: slowly drifting strip of cards -->
-          <div class="up up-c">
-            <div class="up-head">
-              <span class="up-title">50 Adventure Cards</span>
-              <span class="up-price"><s>$20</s><b>$10</b></span>
-            </div>
-            <p class="up-sub">Stories, animals, countries, space &amp; more.</p>
-            <div class="up-marquee">
-              <div class="up-track" id="upTrack">
-                <img src="img/cards/s6.png" alt="Peter Pan story card">
-                <img src="img/cards/s1.png" alt="Octopus animal card">
-                <img src="img/cards/s2.png" alt="Italy country card">
-                <img src="img/cards/s5.png" alt="Airplane engineering card">
-                <img src="img/cards/s4.png" alt="Cooking card">
-                <img src="img/cards/s3.png" alt="Music mood card">
-              </div>
-            </div>
-            <div class="up-foot">
-              <button type="button" class="up-add" data-up-add><span class="t-add">Add for $10</span><span class="t-added">✓ Added</span></button>
-              <button type="button" class="up-more" data-learn>How the cards work</button>
             </div>
           </div>
         </div>
@@ -717,29 +683,30 @@
   </section>
 </main>
 
-<!-- Adventure Cards: learn-more popup -->
+<!-- Discovery Cards: learn-more popup -->
 <div class="sheet-overlay" id="cardsSheet" aria-hidden="true">
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1">
     <button class="sheet-close" data-sheet-close aria-label="Close">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 1.5l9 9M10.5 1.5l-9 9" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/></svg>
     </button>
-    <img class="sheet-hero" src="img/cards/popup-hero.jpg" alt="A child holding a Peter Pan card next to Tovi" width="786" height="406">
+    <img class="sheet-hero" src="img/cards/popup-hero-discovery.jpg" alt="A child holding a fan of Discovery Cards next to Tovi" width="786" height="406">
     <div class="sheet-body">
       <div class="sheet-text">
-        <h3 id="sheetTitle">Every Card Unlocks<br>a New Adventure</h3>
-        <p>Choose a card. Tovi brings it to life. Ask questions, change the story, and become part of the adventure.</p>
+        <h3 id="sheetTitle">Every Card Unlocks<br>Something New to Discover</h3>
+        <p>Each card gives kids a new topic to explore with Tovi, from stories and animals to countries, space, science, cooking, and more.</p>
       </div>
-      <div class="cat-marquee" aria-label="Card categories">
+      <div class="cat-marquee" aria-label="Card topics">
         <div class="cat-track" id="catTrack">
-          <div class="cat"><div class="cat-img"><img src="img/cards/cat-stories.png" alt="" width="154" height="184" loading="lazy"></div><span>Stories</span></div>
-          <div class="cat"><div class="cat-img"><img src="img/cards/cat-animals.png" alt="" width="153" height="184" loading="lazy"></div><span>Animals</span></div>
-          <div class="cat"><div class="cat-img"><img src="img/cards/cat-tech.png" alt="" width="175" height="209" loading="lazy"></div><span>Tech &amp; Engineering</span></div>
-          <div class="cat"><div class="cat-img"><img src="img/cards/cat-countries.png" alt="" width="177" height="209" loading="lazy"></div><span>Countries</span></div>
-          <div class="cat"><div class="cat-img"><img src="img/cards/cat-music.png" alt="" width="163" height="193" loading="lazy"></div><span>Music &amp; Fun</span></div>
-          <div class="cat"><div class="cat-img"><img src="img/cards/cat-chef.png" alt="" width="162" height="193" loading="lazy"></div><span>Chef Challenge</span></div>
+          <div class="cat"><div class="cat-img"><img src="img/cards/discovery/octopus-sm.webp" alt="" width="100" height="134" loading="lazy"></div><span>Animals</span></div>
+          <div class="cat"><div class="cat-img"><img src="img/cards/discovery/space-sm.webp" alt="" width="100" height="134" loading="lazy"></div><span>Space</span></div>
+          <div class="cat"><div class="cat-img"><img src="img/cards/discovery/italy-sm.webp" alt="" width="100" height="134" loading="lazy"></div><span>Countries</span></div>
+          <div class="cat"><div class="cat-img"><img src="img/cards/discovery/chef-sm.webp" alt="" width="100" height="134" loading="lazy"></div><span>Cooking</span></div>
+          <div class="cat"><div class="cat-img"><img src="img/cards/discovery/peterpan-sm.webp" alt="" width="100" height="134" loading="lazy"></div><span>Stories</span></div>
+          <div class="cat"><div class="cat-img"><img src="img/cards/discovery/trex-sm.webp" alt="" width="100" height="134" loading="lazy"></div><span>Dinosaurs</span></div>
+          <div class="cat"><div class="cat-img"><img src="img/cards/discovery/airplane-sm.webp" alt="" width="100" height="134" loading="lazy"></div><span>Science &amp; Tech</span></div>
         </div>
       </div>
-      <button class="sheet-done" data-sheet-close>Close</button>
+      <button class="sheet-add" id="sheetAdd">Add 50 Discovery Cards – $10</button>
     </div>
   </div>
 </div>
@@ -747,7 +714,7 @@
 <!-- Design review only: switch between upsell options -->
 <div class="opt-switch" id="optSwitch" aria-label="Upsell design option">
   <span>Upsell option</span>
-  <button data-opt="a">A</button><button data-opt="b">B</button><button data-opt="c">C</button>
+  <button data-opt="a">A</button><button data-opt="b">B</button>
 </div>
 
 <!-- Footer -->
@@ -840,7 +807,7 @@
     if (withCards) { c.count += 1; c.cards = true; }
     saveCart(c);
     btn.classList.add('is-added');
-    showToast(withCards ? `Added ${add} × Tovi + Adventure Cards` : `Added ${add} × Tovi to cart`);
+    showToast(withCards ? `Added ${add} × Tovi + Discovery Cards` : `Added ${add} × Tovi to cart`);
     syncUpsell();
     setTimeout(() => btn.classList.remove('is-added'), 1600);
   }));
@@ -849,12 +816,12 @@
     showToast(n ? `${n} item${n > 1 ? 's' : ''} in your cart` : 'Your cart is empty');
   });
 
-  // Upsell: Adventure Cards
+  // Upsell: Discovery Cards
   const TOVI_PRICE = 99, CARDS_PRICE = 10;
   const upsell = $('#upsell'), upCheck = $('#upCheck'), atcTotal = $('#atcTotal');
   let variant = 'a';
   try { variant = new URLSearchParams(location.search).get('upsell') || localStorage.getItem('tovi-upsell-opt') || 'a'; } catch {}
-  if (!['a', 'b', 'c'].includes(variant)) variant = 'a';
+  if (!['a', 'b'].includes(variant)) variant = 'a';
 
   function setVariant(v) {
     variant = v;
@@ -867,27 +834,29 @@
     const c = loadCart();
     if (on === !!c.cards) return;
     c.cards = on; c.count = Math.max(0, c.count + (on ? 1 : -1)); saveCart(c);
-    showToast(on ? 'Adventure Cards added — $10' : 'Adventure Cards removed');
+    showToast(on ? 'Discovery Cards added — $10' : 'Discovery Cards removed');
     syncUpsell();
   }
   function syncUpsell() {
     const inCart = !!loadCart().cards;
     $$('[data-up-add]').forEach(b => b.classList.toggle('is-on', inCart));
+    if (inCart) upCheck.checked = true;
+    const sa = $('#sheetAdd');
+    sa.classList.toggle('is-on', inCart);
+    sa.textContent = inCart ? '✓ Added to cart' : 'Add 50 Discovery Cards – $10';
     // Option A bundles into the main button, so show the combined total there
     const bundled = variant === 'a' && upCheck.checked && !inCart;
     const total = clamp(+qty.value) * TOVI_PRICE + (bundled ? CARDS_PRICE : 0);
     atcTotal.textContent = ` · $${total}`;
     atcTotal.classList.toggle('show', bundled);
   }
-  upCheck.addEventListener('change', syncUpsell);
+  upCheck.addEventListener('change', () => { if (!upCheck.checked && loadCart().cards) setCards(false); else syncUpsell(); });
   qty.addEventListener('input', syncUpsell);
   $('#qtyMinus').addEventListener('click', syncUpsell);
   $('#qtyPlus').addEventListener('click', syncUpsell);
   $$('[data-up-add]').forEach(b => b.addEventListener('click', () => setCards(!loadCart().cards)));
   $$('#optSwitch button').forEach(b => b.addEventListener('click', () => setVariant(b.dataset.opt)));
-  // Duplicate strip contents once so the drift loops seamlessly
-  const upTrack = $('#upTrack');
-  [...upTrack.children].forEach(img => { const c = img.cloneNode(); c.alt = ''; c.setAttribute('aria-hidden', 'true'); upTrack.appendChild(c); });
+  // Duplicate the topic row once so the drift loops seamlessly
   const catTrack = $('#catTrack');
   [...catTrack.children].forEach(el => { const c = el.cloneNode(true); c.setAttribute('aria-hidden', 'true'); catTrack.appendChild(c); });
 
@@ -900,6 +869,10 @@
   $$('[data-sheet-close]').forEach(b => b.addEventListener('click', closeSheet));
   sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.classList.contains('open')) closeSheet(); });
+  $('#sheetAdd').addEventListener('click', () => {
+    if (!loadCart().cards) setCards(true);
+    setTimeout(closeSheet, 450);
+  });
   setVariant(variant);
 
   // Toast
