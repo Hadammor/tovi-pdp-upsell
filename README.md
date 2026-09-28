@@ -5,7 +5,7 @@ Static replica of the Tovi product page (heytovi.com/products/tovi) used to prot
 
 - `index.html` — the whole page (HTML, CSS and JS inline)
 - `img/` — product, feature, review and card images
-- `img/cards/simple/` — minimal subject cards (solid colour + one icon) used in the upsell fans and strip
+- `img/cards/simple/` — subject cards in the Tovi card style (coloured frame, title banner, one big illustration) used in the upsell fans and strip
 - `img/cards/discovery/` — illustrated card faces used in the Learn more popup
 
 Three upsell designs (A: checkbox that bundles with the main Add to cart, B: its own
