@@ -170,21 +170,21 @@
   /* Fan of simple subject cards (shared by A and B) — the front card rotates every few seconds */
   .up-fan { position: relative; width: 96px; height: 100px; }
   .up-fan img {
-    position: absolute; left: 19px; top: 10px; width: 58px; height: auto; aspect-ratio: 3 / 4; border-radius: 5px;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,.18));
+    position: absolute; left: 24px; top: 12px; width: 48px; height: auto; aspect-ratio: 3 / 4; border-radius: 4px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,.16));
     transition: transform .6s cubic-bezier(.3,.7,.2,1), opacity .45s ease;
   }
   .up-fan img.pos-front  { z-index: 3; transform: rotate(-3deg); }
-  .up-fan img.pos-left   { z-index: 1; transform: translate(-20px, 5px) rotate(-15deg) scale(.86); }
-  .up-fan img.pos-right  { z-index: 2; transform: translate(20px, 5px) rotate(13deg) scale(.86); }
-  .up-fan img.pos-out    { z-index: 4; transform: translate(44px, -8px) rotate(22deg) scale(.92); opacity: 0; }
-  .up-fan img.pos-hidden { z-index: 0; transform: translate(20px, 5px) rotate(13deg) scale(.7); opacity: 0; }
+  .up-fan img.pos-left   { z-index: 1; transform: translate(-16px, 4px) rotate(-14deg) scale(.86); }
+  .up-fan img.pos-right  { z-index: 2; transform: translate(16px, 4px) rotate(12deg) scale(.86); }
+  .up-fan img.pos-out    { z-index: 4; transform: translate(36px, -6px) rotate(20deg) scale(.92); opacity: 0; }
+  .up-fan img.pos-hidden { z-index: 0; transform: translate(16px, 4px) rotate(12deg) scale(.7); opacity: 0; }
   .up-fan img.no-anim { transition: none; }
   .up-fan-label {
     position: absolute; left: -6px; right: -6px; bottom: 0; text-align: center; white-space: nowrap;
     font-size: 12.5px; font-weight: 900; letter-spacing: -0.01em; transition: opacity .3s ease;
   }
-  .with-label .up-fan { height: 116px; }
+  .with-label .up-fan { height: 108px; }
   .up-fan-label.fade { opacity: 0; }
 
   /* A: checkbox — check top-right, price bottom-right */
@@ -196,7 +196,7 @@
   .up-a .up-fan { grid-column: 1; grid-row: 1 / 4; align-self: center; }
   .up-a .up-body { display: contents; }
   .up-a .up-title { grid-column: 2; grid-row: 1; align-self: center; }
-  .up-a .up-sub { grid-column: 2 / 4; grid-row: 2; }
+  .up-a .up-sub { grid-column: 2; grid-row: 2; }   /* wraps before the checkbox column */
   .up-a .up-more { grid-column: 2; grid-row: 3; justify-self: start; align-self: end; }
   .up-tick {
     grid-column: 3; grid-row: 1; justify-self: end; align-self: start;
@@ -204,12 +204,17 @@
     display: grid; place-items: center; color: transparent; transition: all .15s ease;
   }
   .up-tick svg { width: 16px; height: 16px; }
-  .up-a .up-price { grid-column: 3; grid-row: 3; justify-self: end; align-self: end; }
+  .up-a .up-price { grid-column: 2 / 4; grid-row: 3; justify-self: end; align-self: end; }   /* keeps the checkbox column narrow */
   .up-a:hover { border-color: rgba(53,53,53,.12); }
   .up-a:has(input:checked) { border-color: var(--yellow); background: #fff4d6; }
   .up-a:has(input:checked) .up-tick { background: var(--yellow); border-color: var(--yellow); color: var(--fg); }
   .up-a:has(input:focus-visible) { outline: 2px solid var(--fg); outline-offset: 2px; }
-  @media (max-width: 359px) { .up-a .up-title { white-space: normal; } }
+  @media (max-width: 359px) {                        /* small phones: smaller fan, more room for text */
+    .up-a { grid-template-columns: 78px 1fr auto; gap: 4px 10px; padding: 14px; }
+    .up-b { grid-template-columns: 78px 1fr; }
+    .up-fan { zoom: .82; }
+    .up-a .up-title { white-space: normal; }
+  }
 
   /* B: button left, price right */
   .up-b {
