@@ -149,7 +149,7 @@
   .upsell[data-variant="b"] .up-b,
   .upsell[data-variant="c"] .up-c { display: grid; }
   .up-title { display: block; white-space: nowrap; font-size: 16px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; }
-  .up-sub { display: block; font-size: 13.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; opacity: .85; }
+  .up-sub { display: block; font-size: 13.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; opacity: .85; text-wrap: pretty; }
   .up-price { display: inline-flex; align-items: baseline; gap: 6px; font-weight: 900; letter-spacing: 0; white-space: nowrap; }
   .up-price s { font-size: 13px; font-weight: 700; opacity: .5; }
   .up-price b { font-size: 18px; font-weight: 900; }
@@ -231,6 +231,7 @@
   /* C: slowly drifting card strip (button left, how it works right) */
   .up-c { gap: 10px; padding: 16px; border-radius: 16px; background: var(--blue); overflow: hidden; }
   .up-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .up-c .up-sub { text-wrap: balance; }
   .up-marquee { margin: 2px -16px 0; padding: 6px 0 10px; overflow: hidden; }
   .up-track { display: flex; width: max-content; animation: upDrift 60s linear infinite; }
   .up-card { flex: 0 0 66px; margin-right: 6px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
@@ -279,7 +280,7 @@
   }
   .sheet-text { padding: 0 24px; display: grid; gap: 8px; text-align: center; }
   .sheet-text h3 { font-size: clamp(22px, 6.9vw, 30px); font-weight: 900; line-height: 1.1; letter-spacing: -0.05em; }
-  .sheet-text p { font-size: 15px; font-weight: 600; line-height: 1.5; letter-spacing: -0.04em; }
+  .sheet-text p { font-size: 15px; font-weight: 600; line-height: 1.5; letter-spacing: -0.04em; text-wrap: balance; }
 
   /* Categories: continuous slow drift, side to side */
   .cat-marquee { width: 100%; overflow: hidden; padding: 20px 0; }
@@ -572,7 +573,7 @@
             <div class="up-fan" aria-hidden="true"></div>
             <span class="up-body">
               <span class="up-title">50 Discovery Cards</span>
-              <span class="up-sub">Pick a card and Tovi starts a conversation about it.</span>
+              <span class="up-sub">Pick a card and Tovi helps your child learn about it.</span>
               <button type="button" class="up-more" data-learn>Learn more</button>
             </span>
             <span class="up-tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -584,7 +585,7 @@
             <div class="up-fan" aria-hidden="true"></div>
             <div class="up-body">
               <span class="up-title">50 Discovery Cards</span>
-              <span class="up-sub">Pick a card and Tovi starts a conversation about it.</span>
+              <span class="up-sub">Pick a card and Tovi helps your child learn about it.</span>
               <button type="button" class="up-more" data-learn>Learn more</button>
             </div>
             <div class="up-side">
@@ -599,7 +600,7 @@
               <span class="up-title">50 Discovery Cards</span>
               <span class="up-price"><s>$20</s><b>$10</b></span>
             </div>
-            <p class="up-sub">Pick a card and Tovi starts a conversation about it.</p>
+            <p class="up-sub">Pick a card and Tovi helps your child learn about it.</p>
             <div class="up-marquee">
               <div class="up-track" id="upTrack">
                 <div class="up-card" style="--chip:#2474bb"><img src="img/cards/simple/space-sm.webp" alt=""><span>Space</span></div>
@@ -751,7 +752,7 @@
     <div class="sheet-body">
       <div class="sheet-text">
         <h3 id="sheetTitle">What are Discovery Cards?</h3>
-        <p>Picture cards with fun topics like space, animals and stories. Your child picks a card, and Tovi starts a conversation about it.</p>
+        <p>Picture cards with fun topics like space, animals and stories. Your child picks a card, and Tovi explains it, asks questions and helps them learn something new.</p>
       </div>
       <div class="cat-marquee" aria-label="Card topics">
         <div class="cat-track" id="catTrack">
