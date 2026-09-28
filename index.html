@@ -167,18 +167,25 @@
   .up-add.is-on .t-added { display: inline; }
   .up-add.is-on { background: #e8f6ea; color: #1f7a35; border-color: #bfe3c6; }
 
-  /* Fan of three simple cards (shared by A and B) */
+  /* Fan of simple subject cards (shared by A and B) — the front card rotates every few seconds */
   .up-fan { position: relative; width: 96px; height: 100px; }
   .up-fan img {
-    position: absolute; top: 16px; left: 22px; width: 50px; height: auto; border-radius: 4px;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,.2)); transition: transform .3s ease;
+    position: absolute; left: 19px; top: 10px; width: 58px; height: auto; aspect-ratio: 3 / 4; border-radius: 5px;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,.18));
+    transition: transform .6s cubic-bezier(.3,.7,.2,1), opacity .45s ease;
   }
-  .up-fan img:nth-child(1) { transform: translateX(-19px) rotate(-15deg); }
-  .up-fan img:nth-child(2) { transform: translateX(19px) rotate(13deg); }
-  .up-fan img:nth-child(3) { width: 58px; left: 19px; top: 8px; transform: rotate(-3deg); }
-  .up:hover .up-fan img:nth-child(1) { transform: translateX(-24px) rotate(-20deg); }
-  .up:hover .up-fan img:nth-child(2) { transform: translateX(24px) rotate(18deg); }
-  .up:hover .up-fan img:nth-child(3) { transform: translateY(-3px) rotate(-3deg); }
+  .up-fan img.pos-front  { z-index: 3; transform: rotate(-3deg); }
+  .up-fan img.pos-left   { z-index: 1; transform: translate(-20px, 5px) rotate(-15deg) scale(.86); }
+  .up-fan img.pos-right  { z-index: 2; transform: translate(20px, 5px) rotate(13deg) scale(.86); }
+  .up-fan img.pos-out    { z-index: 4; transform: translate(44px, -8px) rotate(22deg) scale(.92); opacity: 0; }
+  .up-fan img.pos-hidden { z-index: 0; transform: translate(20px, 5px) rotate(13deg) scale(.7); opacity: 0; }
+  .up-fan img.no-anim { transition: none; }
+  .up-fan-label {
+    position: absolute; left: 0; right: 0; bottom: 0; text-align: center;
+    font-size: 12px; font-weight: 900; letter-spacing: 0; transition: opacity .3s ease;
+  }
+  .with-label .up-fan { height: 116px; }
+  .up-fan-label.fade { opacity: 0; }
 
   /* A: checkbox — check top-right, price bottom-right */
   .up-a {
@@ -220,7 +227,7 @@
   .up-marquee { margin: 2px -16px 0; padding: 6px 0 10px; overflow: hidden; }
   .up-track { display: flex; width: max-content; animation: upDrift 60s linear infinite; }
   .up-track img {
-    flex: 0 0 66px; width: 66px; height: auto; aspect-ratio: 480 / 645; object-fit: cover; margin-right: 8px;
+    flex: 0 0 62px; width: 62px; height: auto; aspect-ratio: 3 / 4; object-fit: cover; margin-right: 8px;
     border-radius: 4px; filter: drop-shadow(0 2px 5px rgba(0,0,0,.15));
   }
   .up-marquee:hover .up-track { animation-play-state: paused; }
@@ -550,12 +557,10 @@
           <!-- Option A: checkbox, bundled into the main Add to cart -->
           <label class="up up-a">
             <input type="checkbox" id="upCheck" class="sr-only">
-            <div class="up-fan" aria-hidden="true">
-              <img src="img/cards/discovery/italy-sm.webp" alt=""><img src="img/cards/discovery/space-sm.webp" alt=""><img src="img/cards/discovery/octopus-sm.webp" alt="">
-            </div>
+            <div class="up-fan" aria-hidden="true"></div>
             <span class="up-body">
               <span class="up-title">50 Discovery Cards</span>
-              <span class="up-sub">Stories, animals, countries, science, space &amp; more.</span>
+              <span class="up-sub">Pick a card and Tovi starts a conversation about it.</span>
               <button type="button" class="up-more" data-learn>Learn more</button>
             </span>
             <span class="up-tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -564,12 +569,10 @@
 
           <!-- Option B: its own Add button -->
           <div class="up up-b">
-            <div class="up-fan" aria-hidden="true">
-              <img src="img/cards/discovery/italy-sm.webp" alt=""><img src="img/cards/discovery/space-sm.webp" alt=""><img src="img/cards/discovery/octopus-sm.webp" alt="">
-            </div>
+            <div class="up-fan" aria-hidden="true"></div>
             <div class="up-body">
               <span class="up-title">50 Discovery Cards</span>
-              <span class="up-sub">Stories, animals, countries, science, space &amp; more.</span>
+              <span class="up-sub">Pick a card and Tovi starts a conversation about it.</span>
               <button type="button" class="up-more" data-learn>Learn more</button>
             </div>
             <div class="up-side">
@@ -584,16 +587,17 @@
               <span class="up-title">50 Discovery Cards</span>
               <span class="up-price"><s>$20</s><b>$10</b></span>
             </div>
-            <p class="up-sub">Stories, animals, countries, science, space &amp; more.</p>
+            <p class="up-sub">Pick a card and Tovi starts a conversation about it.</p>
             <div class="up-marquee">
               <div class="up-track" id="upTrack">
-                <img src="img/cards/discovery/octopus-sm.webp" alt="Octopus card">
-                <img src="img/cards/discovery/space-sm.webp" alt="Space card">
-                <img src="img/cards/discovery/italy-sm.webp" alt="Italy card">
-                <img src="img/cards/discovery/chef-sm.webp" alt="Little Chef card">
-                <img src="img/cards/discovery/peterpan-sm.webp" alt="Peter Pan card">
-                <img src="img/cards/discovery/trex-sm.webp" alt="Dinosaurs card">
-                <img src="img/cards/discovery/airplane-sm.webp" alt="Airplane card">
+                <img src="img/cards/simple/space-sm.webp" alt="Space card">
+                <img src="img/cards/simple/languages-sm.webp" alt="Languages card">
+                <img src="img/cards/simple/science-sm.webp" alt="Science card">
+                <img src="img/cards/simple/animals-sm.webp" alt="Animals card">
+                <img src="img/cards/simple/world-sm.webp" alt="World card">
+                <img src="img/cards/simple/dinosaurs-sm.webp" alt="Dinosaurs card">
+                <img src="img/cards/simple/stories-sm.webp" alt="Stories card">
+                <img src="img/cards/simple/music-sm.webp" alt="Music card">
               </div>
             </div>
             <div class="up-foot">
@@ -898,6 +902,44 @@
   $('#qtyPlus').addEventListener('click', syncUpsell);
   $$('[data-up-add]').forEach(b => b.addEventListener('click', () => setCards(!loadCart().cards)));
   $$('#optSwitch button').forEach(b => b.addEventListener('click', () => setVariant(b.dataset.opt)));
+  // Rotating card fans (A and B): front card leaves, the next subject moves forward
+  const SUBJECTS = [['space','Space'],['languages','Languages'],['science','Science'],['animals','Animals'],
+                    ['world','World'],['dinosaurs','Dinosaurs'],['stories','Stories'],['music','Music']];
+  const cardSrc = k => `img/cards/simple/${k}-sm.webp`;
+  const showLabel = new URLSearchParams(location.search).get('label') === '1';
+  if (showLabel) upsell.classList.add('with-label');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  $$('.up-fan').forEach(fan => {
+    const POS = ['pos-front', 'pos-left', 'pos-right', 'pos-hidden'];
+    let i = 0;                                    // index of the subject on the front card
+    const imgs = POS.map((pos, n) => {
+      const im = new Image(); im.src = cardSrc(SUBJECTS[n][0]); im.alt = ''; im.className = pos;
+      fan.appendChild(im); return im;
+    });
+    const label = document.createElement('span'); label.className = 'up-fan-label';
+    label.textContent = SUBJECTS[0][1]; if (showLabel) fan.appendChild(label);
+    if (reduceMotion) return;
+    let visible = false, hovered = false;
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold: 0.4 }).observe(fan);
+    const block = fan.closest('.up');
+    block.addEventListener('mouseenter', () => { hovered = true; });
+    block.addEventListener('mouseleave', () => { hovered = false; });
+    setInterval(() => {
+      if (!visible || hovered || document.hidden) return;
+      const at = cls => imgs.find(im => im.classList.contains(cls));
+      const front = at('pos-front'), left = at('pos-left'), right = at('pos-right'), hidden = at('pos-hidden');
+      front.className = 'pos-out'; left.className = 'pos-front'; right.className = 'pos-left'; hidden.className = 'pos-right';
+      i = (i + 1) % SUBJECTS.length;
+      label.classList.add('fade');
+      setTimeout(() => { label.textContent = SUBJECTS[i][1]; label.classList.remove('fade'); }, 300);
+      setTimeout(() => {                          // recycle the card that left as the next one in line
+        front.className = 'pos-hidden no-anim';
+        front.src = cardSrc(SUBJECTS[(i + 3) % SUBJECTS.length][0]);
+        requestAnimationFrame(() => requestAnimationFrame(() => front.classList.remove('no-anim')));
+      }, 650);
+    }, 2800);
+  });
+
   // Duplicate strip contents once so the drift loops seamlessly
   const upTrack = $('#upTrack');
   [...upTrack.children].forEach(img => { const c = img.cloneNode(); c.alt = ''; c.setAttribute('aria-hidden', 'true'); upTrack.appendChild(c); });
