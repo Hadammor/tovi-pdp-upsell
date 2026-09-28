@@ -181,8 +181,8 @@
   .up-fan img.pos-hidden { z-index: 0; transform: translate(20px, 5px) rotate(13deg) scale(.7); opacity: 0; }
   .up-fan img.no-anim { transition: none; }
   .up-fan-label {
-    position: absolute; left: 0; right: 0; bottom: 0; text-align: center;
-    font-size: 12px; font-weight: 900; letter-spacing: 0; transition: opacity .3s ease;
+    position: absolute; left: -6px; right: -6px; bottom: 0; text-align: center; white-space: nowrap;
+    font-size: 12.5px; font-weight: 900; letter-spacing: -0.01em; transition: opacity .3s ease;
   }
   .with-label .up-fan { height: 116px; }
   .up-fan-label.fade { opacity: 0; }
@@ -908,7 +908,7 @@
   const SUBJECTS = [['space','Space'],['languages','Languages'],['science','Science'],['animals','Animals'],
                     ['world','World'],['dinosaurs','Dinosaurs'],['stories','Stories'],['music','Music']];
   const cardSrc = k => `img/cards/simple/${k}-sm.webp`;
-  const showLabel = new URLSearchParams(location.search).get('label') === '1';
+  const showLabel = new URLSearchParams(location.search).get('label') !== '0';   // subject name under the fan
   if (showLabel) upsell.classList.add('with-label');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   $$('.up-fan').forEach(fan => {
