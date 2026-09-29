@@ -144,10 +144,8 @@
   .specs { font-size: 13px; text-align: center; opacity: .7; letter-spacing: 0; }
 
   /* ---------- Upsell: Discovery Cards ---------- */
-  .upsell .up { display: none; }
-  .upsell[data-variant="a"] .up-a,
-  .upsell[data-variant="b"] .up-b,
-  .upsell[data-variant="c"] .up-c { display: grid; }
+  /* A = checkbox block on the product page · B = drawer after Add to cart · C = offer inside the cart */
+  .upsell:not([data-variant="a"]) { display: none; }
   .up-title { display: block; white-space: nowrap; font-size: 16px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; }
   .up-sub { display: block; font-size: 13.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; opacity: .85; text-wrap: pretty; }
   .up-price { display: inline-flex; align-items: baseline; gap: 6px; font-weight: 900; letter-spacing: 0; white-space: nowrap; }
@@ -157,31 +155,22 @@
     display: inline; padding: 0; font-size: 13.5px; font-weight: 800; letter-spacing: 0;
     text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; opacity: 1;
   }
-  .up-add {
-    height: 38px; padding: 0 16px; border-radius: 14px; background: var(--fg); color: #fff;
-    border: 2px solid var(--fg); font-size: 14px; font-weight: 900; letter-spacing: 0; white-space: nowrap;
-    transition: background .2s ease, color .2s ease, border-color .2s ease;
-  }
-  .up-add:hover { background: #1f1f1f; border-color: #1f1f1f; }
-  .up-add .t-added, .up-add.is-on .t-add { display: none; }
-  .up-add.is-on .t-added { display: inline; }
-  .up-add.is-on { background: #e8f6ea; color: #1f7a35; border-color: #bfe3c6; }
 
-  /* Static fan of three illustrated cards (shared by A and B) */
-  .up-fan { position: relative; width: 96px; height: 100px; }
+  /* Static fan of three illustrated cards */
+  .up-fan { position: relative; width: 88px; height: 92px; }
   .up-fan img {
-    position: absolute; left: 19px; top: 8px; width: 58px; height: auto; aspect-ratio: 480 / 645; object-fit: cover;
-    border-radius: 5px; filter: drop-shadow(0 3px 6px rgba(0,0,0,.18));
+    position: absolute; left: 19px; top: 9px; width: 50px; height: auto; aspect-ratio: 480 / 645; object-fit: cover;
+    border-radius: 4px; filter: drop-shadow(0 3px 6px rgba(0,0,0,.18));
   }
   .up-fan img.pos-front { z-index: 3; transform: rotate(-3deg); }
-  .up-fan img.pos-left  { z-index: 1; transform: translate(-19px, 7px) rotate(-15deg) scale(.86); }
-  .up-fan img.pos-right { z-index: 2; transform: translate(19px, 7px) rotate(13deg) scale(.86); }
+  .up-fan img.pos-left  { z-index: 1; transform: translate(-17px, 6px) rotate(-15deg) scale(.86); }
+  .up-fan img.pos-right { z-index: 2; transform: translate(17px, 6px) rotate(13deg) scale(.86); }
 
-  /* A: checkbox — check top-right, price bottom-right */
+  /* Checkbox offer (A on the page, C in the cart) — check top-right, price bottom-right */
   .up-a {
-    grid-template-columns: 96px 1fr auto; grid-template-rows: auto 1fr auto;
-    gap: 4px 12px; padding: 16px; border: 2px solid transparent; border-radius: 18px;
-    background: var(--cream); cursor: pointer; transition: border-color .2s ease, background .2s ease;
+    display: grid; grid-template-columns: 88px 1fr auto; grid-template-rows: auto 1fr auto;
+    gap: 4px 12px; padding: 16px; border: 2px solid var(--line); border-radius: 18px;
+    background: #fff; cursor: pointer; transition: border-color .2s ease, background .2s ease;
   }
   .up-a .up-fan { grid-column: 1; grid-row: 1 / 4; align-self: center; }
   .up-a .up-body { display: contents; }
@@ -195,52 +184,88 @@
   }
   .up-tick svg { width: 16px; height: 16px; }
   .up-a .up-price { grid-column: 2 / 4; grid-row: 3; justify-self: end; align-self: end; }   /* keeps the checkbox column narrow */
-  .up-a:hover { border-color: rgba(53,53,53,.12); }
-  .up-a:has(input:checked) { border-color: var(--yellow); background: #fff4d6; }
+  .up-a:hover, .up-a:has(input:checked) { border-color: var(--yellow); background: #fff4d6; }
   .up-a:has(input:checked) .up-tick { background: var(--yellow); border-color: var(--yellow); color: var(--fg); }
   .up-a:has(input:focus-visible) { outline: 2px solid var(--fg); outline-offset: 2px; }
   @media (max-width: 359px) {                        /* small phones: smaller fan, more room for text */
-    .up-a { grid-template-columns: 78px 1fr auto; gap: 4px 10px; padding: 14px; }
-    .up-b { grid-template-columns: 78px 1fr; }
-    .up-fan { zoom: .82; }
+    .up-a { grid-template-columns: 72px 1fr auto; gap: 4px 10px; padding: 14px; }
+    .up-a .up-fan { zoom: .82; }
     .up-a .up-title { white-space: normal; }
   }
 
-  /* B: button left, price right */
-  .up-b {
-    grid-template-columns: 96px 1fr; grid-template-areas: "fan body" "side side";
-    gap: 16px 14px; padding: 18px 18px 18px 16px; border-radius: 18px; background: var(--cream); align-items: center;
-  }
-  .up-b .up-fan { grid-area: fan; }
-  .up-b .up-body { grid-area: body; display: grid; gap: 6px; justify-items: start; }
-  .up-b .up-side { grid-area: side; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    border-top: 1px solid rgba(53,53,53,.1); padding-top: 16px; }
-
-  /* C: slowly drifting card strip (button left, how it works right) */
-  .up-c { gap: 10px; padding: 16px; border-radius: 16px; background: var(--blue); overflow: hidden; }
-  .up-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .up-c .up-sub { text-wrap: balance; }
-  .up-marquee { margin: 2px -16px 0; padding: 6px 0 10px; overflow: hidden; }
-  .up-track { display: flex; width: max-content; animation: upDrift 60s linear infinite; }
-  .up-card { flex: 0 0 66px; margin-right: 6px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .up-card img {
-    width: 62px; height: auto; aspect-ratio: 3 / 4; object-fit: cover;
-    border-radius: 4px; filter: drop-shadow(0 2px 5px rgba(0,0,0,.15));
-  }
-  .up-card span {
-    padding: 2px 7px; border-radius: 999px; background: var(--chip, var(--fg)); color: #fff;
-    font-size: 10px; font-weight: 900; letter-spacing: .01em; line-height: 1.25; white-space: nowrap;
-  }
-  .up-marquee:hover .up-track { animation-play-state: paused; }
-  @keyframes upDrift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) {
-    .up-track { animation: none; }
-    .up-marquee { overflow-x: auto; }
-  }
-  .up-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-
   .atc-total { display: none; }
   .atc-total.show { display: inline; }
+
+  /* ---------- Cart page (matches heytovi.com/cart) ---------- */
+  .cart-page { background: var(--blue); padding: 24px 0 56px; min-height: 72vh; }
+  .cart-page[hidden], main[hidden] { display: none; }
+  .cart-page h2 { font-size: 22px; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .cart-card { background: #fff; border-radius: 24px; overflow: hidden; }
+  .cart-card[hidden] { display: none; }
+  .cart-items { padding: 0 16px; }
+  .cart-line { display: grid; grid-template-columns: 119px 1fr; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .cl-thumb { width: 119px; height: 119px; border-radius: 8px; object-fit: cover; }
+  .cl-thumb.cards { background: var(--cream); display: grid; place-items: center; }
+  .cl-thumb.cards .up-fan { zoom: 1.12; }
+  .cl-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 8px; }
+  .cl-name { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; }
+  .cl-price { display: inline-flex; gap: 6px; font-size: 22px; line-height: 1.2; letter-spacing: -0.02em; white-space: nowrap; }
+  .cl-price s { color: #c9482b; font-weight: 500; }
+  .cl-price b { font-weight: 900; }
+  .cl-sub { font-size: 15px; line-height: 1.2; margin-top: 8px; }
+  .cl-actions { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .cl-qty { display: grid; grid-template-columns: 44px 26px 44px; align-items: center; height: 46px; border: 1px solid #dfdfdf; border-radius: 16px; }
+  .cl-qty button { height: 44px; display: grid; place-items: center; font-size: 22px; font-weight: 700; }
+  .cl-qty span { text-align: center; font-size: 16px; font-weight: 700; letter-spacing: 0; }
+  .cl-qty.fixed { display: flex; padding: 0 16px; font-size: 14px; font-weight: 700; letter-spacing: 0; color: rgba(53,53,53,.7); }
+  .cl-remove { width: 32px; height: 44px; display: grid; place-items: center; }
+  .cl-remove svg { width: 16px; height: 16px; }
+  .cart-offer { padding: 20px 0; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+  .cart-offer[hidden] { display: none; }
+  .cart-offer .up-a { grid-template-columns: 72px 1fr auto; gap: 4px 10px; padding: 14px; }
+  .cart-offer .up-fan { zoom: .82; }
+  .cart-offer .up-title { white-space: normal; }
+  .cart-offer-label { font-size: 12px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; opacity: .6; }
+  .cart-summary { padding: 24px 16px 20px; display: grid; gap: 16px; }
+  .cart-summary h4 { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; }
+  .cart-total { display: flex; justify-content: space-between; align-items: baseline; font-size: 22px; font-weight: 900; letter-spacing: -0.03em; margin-top: 8px; }
+  .cart-note { font-size: 14px; opacity: .7; letter-spacing: -0.02em; margin-top: -8px; }
+  .cart-summary .btn { width: 100%; }
+  .cart-returns { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 15px; font-weight: 700; letter-spacing: 0; }
+  .cart-returns svg { width: 16px; height: 16px; color: var(--yellow); fill: currentColor; }
+  .cart-empty { padding: 48px 16px; text-align: center; display: grid; gap: 16px; justify-items: center; }
+  .cart-empty p { font-size: 18px; font-weight: 800; }
+
+  /* ---------- B: "Added to cart" drawer ---------- */
+  .added-overlay {
+    position: fixed; inset: 0; z-index: 390; background: rgba(0,0,0,.45);
+    display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility 0s linear .25s;
+  }
+  .added-overlay.open { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .added {
+    position: relative; width: 100%; max-width: 430px; max-height: 92svh; overflow-y: auto;
+    background: #fff; border-radius: 20px 20px 0 0; padding: 20px 20px calc(18px + env(safe-area-inset-bottom));
+    display: grid; gap: 16px; transform: translateY(100%); transition: transform .32s cubic-bezier(.2,.8,.2,1);
+  }
+  .added:focus { outline: none; }
+  .added-overlay.open .added { transform: none; }
+  .added-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: #f3eee9; display: grid; place-items: center; }
+  .added-head { display: flex; align-items: center; gap: 12px; padding-right: 40px; }
+  .added-head img { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; }
+  .added-head h3 { font-size: 17px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.2; display: flex; align-items: center; gap: 6px; }
+  .added-head h3 i { width: 20px; height: 20px; border-radius: 50%; background: #2e9d4f; color: #fff; display: inline-grid; place-items: center; font-style: normal; font-size: 12px; flex: 0 0 20px; }
+  .added-head p { font-size: 14px; opacity: .7; margin-top: 2px; letter-spacing: -0.01em; }
+  .added-offer {
+    display: grid; grid-template-columns: 88px 1fr; gap: 4px 12px; align-content: center;
+    padding: 16px; border-radius: 18px; background: #fff4d6; border: 2px solid var(--yellow);
+  }
+  .added-offer .up-fan { grid-row: 1 / 5; align-self: center; }
+  .added-eyebrow { font-size: 11px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; opacity: .65; }
+  .added-offer-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 4px; }
+  .added-actions { display: grid; gap: 4px; }
+  .added-actions .btn { width: 100%; height: 50px; text-transform: none; font-size: 17px; letter-spacing: -0.02em; }
+  .added-skip { height: 44px; font-size: 15px; font-weight: 800; letter-spacing: 0; text-decoration: underline; text-underline-offset: 3px; }
 
   /* ---------- Learn-more sheet ---------- */
   .sheet-overlay {
@@ -464,7 +489,16 @@
     .rv-write { justify-self: end; }
     .rv { grid-template-columns: 220px 1fr; column-gap: 32px; padding: 24px 16px; }
     .rv-meta { grid-row: span 3; flex-direction: column; align-items: flex-start; justify-content: flex-start; }
-    .sheet-overlay { align-items: center; padding: 24px; }
+    .sheet-overlay, .added-overlay { align-items: center; padding: 24px; }
+    .added { border-radius: 20px; transform: translateY(24px) scale(.98); }
+    .cart-page { padding: 40px 0 80px; }
+    .cart-page h2 { font-size: 34px; margin-bottom: 24px; }
+    .cart-card:not(.cart-empty) { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+    .cart-items { padding: 8px 32px; }
+    .cart-summary { padding: 32px; border-left: 1px solid var(--line); align-content: start; }
+    .cart-offer { border-bottom: 0; }
+    .cart-offer .up-a { grid-template-columns: 88px 1fr auto; gap: 4px 12px; padding: 16px; }
+    .cart-offer .up-fan { zoom: 1; }
     .sheet { border-radius: 20px; max-height: 88vh; transform: translateY(24px) scale(.98); }
     .footer .wrap { grid-template-columns: 1fr auto; justify-items: stretch; text-align: left; align-items: center; }
     .contact-btn { justify-self: end; }
@@ -552,11 +586,9 @@
           <li><svg><use href="#i-check"/></svg>Smart play without screen time</li>
           <li><svg><use href="#i-check"/></svg>Curiosity-sparking stories</li>
         </ul>
-        <!-- Upsell: 50 Discovery Cards (3 design options, one shown at a time) -->
+        <!-- Upsell (A): checkbox that bundles the cards with the main Add to cart -->
         <div class="upsell" id="upsell" data-variant="a">
-
-          <!-- Option A: checkbox, bundled into the main Add to cart -->
-          <label class="up up-a">
+          <label class="up-a">
             <input type="checkbox" id="upCheck" class="sr-only">
             <div class="up-fan" aria-hidden="true">
               <img class="pos-left" src="img/cards/discovery/italy-sm.webp" alt=""><img class="pos-right" src="img/cards/discovery/chef-sm.webp" alt=""><img class="pos-front" src="img/cards/discovery/space-sm.webp" alt="">
@@ -569,47 +601,6 @@
             <span class="up-tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="up-price"><s>$20</s><b>$10</b></span>
           </label>
-
-          <!-- Option B: its own Add button -->
-          <div class="up up-b">
-            <div class="up-fan" aria-hidden="true">
-              <img class="pos-left" src="img/cards/discovery/italy-sm.webp" alt=""><img class="pos-right" src="img/cards/discovery/chef-sm.webp" alt=""><img class="pos-front" src="img/cards/discovery/space-sm.webp" alt="">
-            </div>
-            <div class="up-body">
-              <span class="up-title">50 Discovery Cards</span>
-              <span class="up-sub">Fun topic cards to explore with Tovi: stories, animals, science, cooking &amp; more.</span>
-              <button type="button" class="up-more" data-learn>Learn more</button>
-            </div>
-            <div class="up-side">
-              <button type="button" class="up-add" data-up-add><span class="t-add">+ Add to order</span><span class="t-added">✓ Added</span></button>
-              <span class="up-price"><s>$20</s><b>$10</b></span>
-            </div>
-          </div>
-
-          <!-- Option C: slowly drifting strip of cards -->
-          <div class="up up-c">
-            <div class="up-head">
-              <span class="up-title">50 Discovery Cards</span>
-              <span class="up-price"><s>$20</s><b>$10</b></span>
-            </div>
-            <p class="up-sub">Fun topic cards to explore with Tovi: stories, animals, science, cooking &amp; more.</p>
-            <div class="up-marquee">
-              <div class="up-track" id="upTrack">
-                <div class="up-card" style="--chip:#2474bb"><img src="img/cards/simple/space-sm.webp" alt=""><span>Space</span></div>
-                <div class="up-card" style="--chip:#03a49e"><img src="img/cards/simple/languages-sm.webp" alt=""><span>Languages</span></div>
-                <div class="up-card" style="--chip:#4da668"><img src="img/cards/simple/science-sm.webp" alt=""><span>Science</span></div>
-                <div class="up-card" style="--chip:#ed7425"><img src="img/cards/simple/animals-sm.webp" alt=""><span>Animals</span></div>
-                <div class="up-card" style="--chip:#e14340"><img src="img/cards/simple/world-sm.webp" alt=""><span>World</span></div>
-                <div class="up-card" style="--chip:#ad713e"><img src="img/cards/simple/dinosaurs-sm.webp" alt=""><span>Dinosaurs</span></div>
-                <div class="up-card" style="--chip:#81409b"><img src="img/cards/simple/stories-sm.webp" alt=""><span>Stories</span></div>
-                <div class="up-card" style="--chip:#ec6a94"><img src="img/cards/simple/music-sm.webp" alt=""><span>Music</span></div>
-              </div>
-            </div>
-            <div class="up-foot">
-              <button type="button" class="up-add" data-up-add><span class="t-add">Add for $10</span><span class="t-added">✓ Added</span></button>
-              <button type="button" class="up-more" data-learn>How the cards work</button>
-            </div>
-          </div>
         </div>
 
         <div class="qty">
@@ -734,6 +725,80 @@
   </section>
 </main>
 
+<!-- Cart page (matches heytovi.com/cart) -->
+<section class="cart-page" id="cartPage" hidden aria-labelledby="cartTitle">
+  <div class="wrap">
+    <h2 id="cartTitle">Your Cart</h2>
+    <div class="cart-card" id="cartCard">
+      <div>
+        <div class="cart-items" id="cartItems"></div>
+        <!-- C: the same checkbox offer, inside the cart -->
+        <div class="cart-items">
+          <div class="cart-offer" id="cartOffer" hidden>
+            <span class="cart-offer-label">Add to your order</span>
+            <label class="up-a">
+              <input type="checkbox" id="cartUpCheck" class="sr-only">
+              <div class="up-fan" aria-hidden="true">
+              <img class="pos-left" src="img/cards/discovery/italy-sm.webp" alt=""><img class="pos-right" src="img/cards/discovery/chef-sm.webp" alt=""><img class="pos-front" src="img/cards/discovery/space-sm.webp" alt="">
+            </div>
+              <span class="up-body">
+                <span class="up-title">50 Discovery Cards</span>
+                <span class="up-sub">Fun topic cards to explore with Tovi: stories, animals, science, cooking &amp; more.</span>
+                <button type="button" class="up-more" data-learn>Learn more</button>
+              </span>
+              <span class="up-tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="up-price"><s>$20</s><b>$10</b></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="cart-summary">
+        <h4>Order summary</h4>
+        <div class="cart-total"><span>Total</span><span id="cartTotal">$0</span></div>
+        <p class="cart-note">Shipping and taxes calculated at checkout</p>
+        <button class="btn" id="checkoutBtn">Checkout</button>
+        <div class="cart-returns"><svg><use href="#i-check"/></svg>Free 30-day returns</div>
+      </div>
+    </div>
+    <div class="cart-card cart-empty" id="cartEmpty" hidden>
+      <p>Your cart is empty</p>
+      <button class="btn" data-continue>Continue shopping</button>
+    </div>
+  </div>
+</section>
+
+<!-- B: drawer after Add to cart — confirms Tovi and offers the cards -->
+<div class="added-overlay" id="addedDrawer" aria-hidden="true">
+  <div class="added" role="dialog" aria-modal="true" aria-labelledby="addedTitle" tabindex="-1">
+    <button class="added-close" data-added-close aria-label="Close">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 1.5l9 9M10.5 1.5l-9 9" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/></svg>
+    </button>
+    <div class="added-head">
+      <img src="img/g1.jpg" alt="">
+      <div>
+        <h3 id="addedTitle"><i>✓</i>Tovi was added to your cart</h3>
+        <p id="addedMeta">1 × Tovi · $99</p>
+      </div>
+    </div>
+    <div class="added-offer">
+      <div class="up-fan" aria-hidden="true">
+              <img class="pos-left" src="img/cards/discovery/italy-sm.webp" alt=""><img class="pos-right" src="img/cards/discovery/chef-sm.webp" alt=""><img class="pos-front" src="img/cards/discovery/space-sm.webp" alt="">
+            </div>
+      <span class="added-eyebrow">Add to your order</span>
+      <span class="up-title">50 Discovery Cards</span>
+      <span class="up-sub">Fun topic cards to explore with Tovi: stories, animals, science, cooking &amp; more.</span>
+      <div class="added-offer-foot">
+        <button type="button" class="up-more" data-learn>Learn more</button>
+        <span class="up-price"><s>$20</s><b>$10</b></span>
+      </div>
+    </div>
+    <div class="added-actions">
+      <button class="btn" id="addedYes">Add cards – $10</button>
+      <button class="added-skip" id="addedSkip">No thanks, go to cart</button>
+    </div>
+  </div>
+</div>
+
 <!-- Discovery Cards: learn-more popup -->
 <div class="sheet-overlay" id="cardsSheet" aria-hidden="true">
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1">
@@ -766,7 +831,7 @@
 
 <!-- Design review only: switch between upsell options -->
 <div class="opt-switch" id="optSwitch" aria-label="Upsell design option">
-  <span>Upsell option</span>
+  <span>Upsell flow</span>
   <button data-opt="a">A</button><button data-opt="b">B</button><button data-opt="c">C</button>
 </div>
 
@@ -793,7 +858,7 @@
 <script>
 (() => {
   const VIDEO_BASE = 'https://heytovi.com/cdn/shop/videos/c/vp/';
-  const CART_KEY = 'tovi-cart-v1';
+  const CART_KEY = 'tovi-cart-v2';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const starSvg = '<svg><use href="#i-star"/></svg>';
@@ -802,12 +867,15 @@
   $$('[data-stars]').forEach(el => { el.innerHTML = starSvg.repeat(+el.dataset.stars); });
 
   // Scroll lock + drawer
+  let lockDepth = 0;                               // drawers/popups can stack (popup over the B drawer)
   function lockScroll() {
+    if (lockDepth++ > 0) return;
     const y = window.scrollY;
     document.body.dataset.scrollY = y;
     document.body.style.cssText = `position:fixed;top:-${y}px;left:0;right:0;width:100%`;
   }
   function unlockScroll() {
+    if (lockDepth === 0 || --lockDepth > 0) return;
     const y = parseInt(document.body.dataset.scrollY || '0', 10);
     document.body.style.cssText = '';
     window.scrollTo(0, y);
@@ -843,75 +911,145 @@
   $('#qtyPlus').addEventListener('click', () => { qty.value = clamp(+qty.value + 1); });
   qty.addEventListener('change', () => { qty.value = clamp(+qty.value); });
 
-  // Cart
-  function loadCart() { try { return JSON.parse(localStorage.getItem(CART_KEY) || '{"count":0}'); } catch { return { count: 0 }; } }
-  function saveCart(c) { try { localStorage.setItem(CART_KEY, JSON.stringify(c)); } catch {} renderBadge(c.count); }
+  // Cart (state: number of Tovis + whether the cards are in)
+  const TOVI_PRICE = 99, CARDS_PRICE = 10;
+  function loadCart() {
+    try { const c = JSON.parse(localStorage.getItem(CART_KEY) || '{}'); return { tovi: c.tovi || 0, cards: !!c.cards }; }
+    catch { return { tovi: 0, cards: false }; }
+  }
+  function saveCart(c) {
+    if (c.tovi <= 0) { c.tovi = 0; c.cards = false; }        // the $10 price is only with Tovi
+    try { localStorage.setItem(CART_KEY, JSON.stringify(c)); } catch {}
+    renderBadge(c.tovi + (c.cards ? 1 : 0));
+    renderCart(); syncUpsell();
+  }
   function renderBadge(n) {
     const b = $('#cartBadge');
     b.textContent = n > 9 ? '9+' : n;
     b.classList.toggle('show', n > 0);
   }
-  renderBadge(loadCart().count);
-  $$('[data-atc]').forEach(btn => btn.addEventListener('click', () => {
-    const isMain = btn.classList.contains('atc');
-    const add = isMain ? clamp(+qty.value) : 1;
-    const withCards = isMain && variant === 'a' && upCheck.checked && !loadCart().cards;
-    const c = loadCart(); c.count += add;
-    if (withCards) { c.count += 1; c.cards = true; }
-    saveCart(c);
-    btn.classList.add('is-added');
-    showToast(withCards ? `Added ${add} × Tovi + Discovery Cards` : `Added ${add} × Tovi to cart`);
-    syncUpsell();
-    setTimeout(() => btn.classList.remove('is-added'), 1600);
-  }));
-  $('#cartBtn').addEventListener('click', () => {
-    const n = loadCart().count;
-    showToast(n ? `${n} item${n > 1 ? 's' : ''} in your cart` : 'Your cart is empty');
-  });
+  function setCards(on) {
+    const c = loadCart();
+    if (on === c.cards || (on && !c.tovi)) return;
+    c.cards = on; saveCart(c);
+    showToast(on ? 'Discovery Cards added — $10' : 'Discovery Cards removed');
+  }
 
-  // Upsell: Discovery Cards
-  const TOVI_PRICE = 99, CARDS_PRICE = 10;
-  const upsell = $('#upsell'), upCheck = $('#upCheck'), atcTotal = $('#atcTotal');
+  // Which flow is shown: a = checkbox on the page, b = drawer after add, c = offer in the cart
+  const upsell = $('#upsell'), upCheck = $('#upCheck'), cartUpCheck = $('#cartUpCheck'), atcTotal = $('#atcTotal');
   let variant = 'a';
   try { variant = new URLSearchParams(location.search).get('upsell') || localStorage.getItem('tovi-upsell-opt') || 'a'; } catch {}
   if (!['a', 'b', 'c'].includes(variant)) variant = 'a';
-
   function setVariant(v) {
     variant = v;
     upsell.dataset.variant = v;
     $$('#optSwitch button').forEach(b => b.classList.toggle('on', b.dataset.opt === v));
     try { localStorage.setItem('tovi-upsell-opt', v); } catch {}
-    syncUpsell();
-  }
-  function setCards(on) {
-    const c = loadCart();
-    if (on === !!c.cards) return;
-    c.cards = on; c.count = Math.max(0, c.count + (on ? 1 : -1)); saveCart(c);
-    showToast(on ? 'Discovery Cards added — $10' : 'Discovery Cards removed');
-    syncUpsell();
+    renderCart(); syncUpsell();
   }
   function syncUpsell() {
-    const inCart = !!loadCart().cards;
-    $$('[data-up-add]').forEach(b => b.classList.toggle('is-on', inCart));
+    const inCart = loadCart().cards;
     if (inCart) upCheck.checked = true;
-    const sa = $('#sheetAdd');
-    sa.classList.toggle('is-on', inCart);
-    sa.textContent = inCart ? '✓ Added to cart' : 'Add 50 Discovery Cards – $10';
-    // Option A bundles into the main button, so show the combined total there
+    cartUpCheck.checked = inCart;
+    // A bundles into the main button, so show the combined total there
     const bundled = variant === 'a' && upCheck.checked && !inCart;
-    const total = clamp(+qty.value) * TOVI_PRICE + (bundled ? CARDS_PRICE : 0);
-    atcTotal.textContent = ` · $${total}`;
+    atcTotal.textContent = ` · $${clamp(+qty.value) * TOVI_PRICE + (bundled ? CARDS_PRICE : 0)}`;
     atcTotal.classList.toggle('show', bundled);
+    $('#sheetAdd').textContent = inCart ? '✓ Added to cart' : 'Add 50 Discovery Cards – $10';
+    $('#sheetAdd').classList.toggle('is-on', inCart);
   }
   upCheck.addEventListener('change', () => { if (!upCheck.checked && loadCart().cards) setCards(false); else syncUpsell(); });
+  cartUpCheck.addEventListener('change', () => setCards(cartUpCheck.checked));
   qty.addEventListener('input', syncUpsell);
   $('#qtyMinus').addEventListener('click', syncUpsell);
   $('#qtyPlus').addEventListener('click', syncUpsell);
-  $$('[data-up-add]').forEach(b => b.addEventListener('click', () => setCards(!loadCart().cards)));
-  $$('#optSwitch button').forEach(b => b.addEventListener('click', () => setVariant(b.dataset.opt)));
-  // Duplicate strip contents once so the drift loops seamlessly
-  const upTrack = $('#upTrack');
-  [...upTrack.children].forEach(el => { const c = el.cloneNode(true); c.setAttribute('aria-hidden', 'true'); upTrack.appendChild(c); });
+  $$('#optSwitch button').forEach(b => b.addEventListener('click', () => { setVariant(b.dataset.opt); showPage(); }));
+
+  // Cart page
+  const mainEl = $('main'), cartPage = $('#cartPage');
+  const trashSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9.5h6.6L12 4"/></svg>';
+  function renderCart() {
+    const c = loadCart();
+    const empty = !c.tovi;
+    $('#cartCard').hidden = empty; $('#cartEmpty').hidden = !empty;
+    let html = '';
+    if (c.tovi) html += `
+      <div class="cart-line">
+        <img class="cl-thumb" src="img/g1.jpg" alt="Tovi">
+        <div>
+          <div class="cl-top"><span class="cl-name">Tovi</span><span class="cl-price"><s>$149</s><b>$${TOVI_PRICE * c.tovi}</b></span></div>
+          <p class="cl-sub">The smart learning buddy<br>Launch Offer</p>
+          <div class="cl-actions">
+            <div class="cl-qty"><button data-q="-1" aria-label="Decrease quantity">−</button><span>${c.tovi}</span><button data-q="1" aria-label="Increase quantity">+</button></div>
+            <button class="cl-remove" data-remove="tovi" aria-label="Remove Tovi">${trashSvg}</button>
+          </div>
+        </div>
+      </div>`;
+    if (c.cards) html += `
+      <div class="cart-line">
+        <div class="cl-thumb cards">${$('.up-fan').outerHTML}</div>
+        <div>
+          <div class="cl-top"><span class="cl-name">50 Discovery Cards</span><span class="cl-price"><s>$20</s><b>$${CARDS_PRICE}</b></span></div>
+          <p class="cl-sub">Topic cards to explore with Tovi<br>Special price with Tovi</p>
+          <div class="cl-actions">
+            <div class="cl-qty fixed">Qty 1</div>
+            <button class="cl-remove" data-remove="cards" aria-label="Remove Discovery Cards">${trashSvg}</button>
+          </div>
+        </div>
+      </div>`;
+    $('#cartItems').innerHTML = html;
+    $('#cartOffer').hidden = !(variant === 'c' && c.tovi);
+    $('#cartTotal').textContent = '$' + (c.tovi * TOVI_PRICE + (c.cards ? CARDS_PRICE : 0));
+  }
+  $('#cartItems').addEventListener('click', e => {
+    const q = e.target.closest('[data-q]'), r = e.target.closest('[data-remove]');
+    const c = loadCart();
+    if (q) { c.tovi = Math.max(0, Math.min(10, c.tovi + +q.dataset.q)); saveCart(c); }
+    if (r) { if (r.dataset.remove === 'tovi') c.tovi = 0; else c.cards = false; saveCart(c); }
+  });
+  function showCart() {
+    closeAdded();
+    renderCart();
+    mainEl.hidden = true; cartPage.hidden = false; window.scrollTo(0, 0);
+    if (location.hash !== '#cart') history.pushState(null, '', '#cart');
+  }
+  function showPage() {
+    mainEl.hidden = false; cartPage.hidden = true;
+    if (location.hash === '#cart') history.pushState(null, '', location.pathname + location.search);
+  }
+  window.addEventListener('popstate', () => { if (location.hash === '#cart') showCart(); else { mainEl.hidden = false; cartPage.hidden = true; } });
+  $('#cartBtn').addEventListener('click', showCart);
+  $('.header-logo').addEventListener('click', e => { e.preventDefault(); showPage(); window.scrollTo(0, 0); });
+  $$('[data-continue]').forEach(b => b.addEventListener('click', () => { showPage(); window.scrollTo(0, 0); }));
+  $('#checkoutBtn').addEventListener('click', () => showToast('Checkout isn’t connected in this demo'));
+
+  // Add to cart: A bundles the ticked cards, B opens the drawer, A and C go straight to the cart
+  $$('[data-atc]').forEach(btn => btn.addEventListener('click', () => {
+    const isMain = btn.classList.contains('atc');
+    const add = isMain ? clamp(+qty.value) : 1;
+    const c = loadCart(); c.tovi = Math.min(10, c.tovi + add);
+    if (variant === 'a' && isMain && upCheck.checked) c.cards = true;
+    saveCart(c);
+    if (variant === 'b' && !c.cards) openAdded(add); else showCart();
+  }));
+
+  // B: added-to-cart drawer
+  const added = $('#addedDrawer');
+  function openAdded(n) {
+    $('#addedMeta').textContent = `${n} × Tovi · $${n * TOVI_PRICE}`;
+    added.classList.add('open'); added.setAttribute('aria-hidden', 'false'); lockScroll();
+    $('.added', added).focus({ preventScroll: true });
+  }
+  function closeAdded() {
+    if (!added.classList.contains('open')) return;
+    added.classList.remove('open'); added.setAttribute('aria-hidden', 'true'); unlockScroll();
+  }
+  $('#addedYes').addEventListener('click', () => { setCards(true); setTimeout(showCart, 250); });
+  $('#addedSkip').addEventListener('click', showCart);
+  $$('[data-added-close]').forEach(b => b.addEventListener('click', closeAdded));
+  added.addEventListener('click', e => { if (e.target === added) closeAdded(); });
+
+  // Duplicate the popup's topic row once so the drift loops seamlessly
   const catTrack = $('#catTrack');
   [...catTrack.children].forEach(el => { const c = el.cloneNode(true); c.setAttribute('aria-hidden', 'true'); catTrack.appendChild(c); });
 
@@ -925,10 +1063,19 @@
   sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.classList.contains('open')) closeSheet(); });
   $('#sheetAdd').addEventListener('click', () => {
-    if (!loadCart().cards) setCards(true);
-    setTimeout(closeSheet, 450);
+    const inFlow = added.classList.contains('open') || !cartPage.hidden;
+    if (inFlow && loadCart().tovi) {                        // drawer (B) or cart (C): add it now
+      setCards(true);
+      setTimeout(() => { closeSheet(); if (added.classList.contains('open')) showCart(); }, 350);
+    } else {                                                 // product page (A): tick the box so it's added with Tovi
+      upCheck.checked = true; syncUpsell(); showToast('Cards will be added with Tovi');
+      setTimeout(closeSheet, 350);
+    }
   });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && added.classList.contains('open') && !sheet.classList.contains('open')) closeAdded(); });
+  renderBadge((c => c.tovi + (c.cards ? 1 : 0))(loadCart()));
   setVariant(variant);
+  if (location.hash === '#cart') showCart();
 
   // Toast
   let toastTimer;
