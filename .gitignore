@@ -1,1 +1,4 @@
 .DS_Store
+tools/node_modules/
+tools/qa-out/
+__pycache__/

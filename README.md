@@ -1,20 +1,28 @@
-# Tovi — PDP with Discovery Cards upsell
+# Tovi replica — promotions (branch `promotions`)
 
-Static replica of the Tovi product page (heytovi.com/products/tovi) used to prototype a
-"50 Discovery Cards" upsell.
+Homepage + product page replica of heytovi.com, with the Discovery Cards upsell and a simple promotions system
+(adapted from the Lumo replica).
 
-- `index.html` — the whole page (HTML, CSS and JS inline)
-- `img/` — product, feature, review and card images
-- `img/cards/discovery/` — illustrated card faces used in the card fan
-- `img/cards/real/` — Tovi's real cards, used in the Learn more popup
+- `index.html` — homepage, mirrored from heytovi.com (`tools/mirror.py`; local assets in `assets/media|theme|fonts`, videos stay on Tovi's CDN)
+- `products/tovi/index.html` — the hand-built product page (upsell flows A/B/C, Learn more popup, cart)
+- `assets/site/tovi-home.js` — homepage "Add to cart" → our cart (the mirrored buttons post to Shopify otherwise)
+- `img/` — product page images
 
-Three upsell flows (switch with the pill at the bottom of the page or `?upsell=a|b|c`):
+## Promotions (`assets/promo/`)
+Three themes: **Sale** (default, generic — reword it for any other holiday/promotion), **Christmas** (snow), **Cyber Monday** (digital rain).
+- `promo-themes.js` — per theme: colors, icon, effect, countdown end (`MM-DD` or `week`), code, strip messages, badge, callout, hero label.
+  ⚠️ Discount codes (TOVI10, TOVIJOY, TOVICYBER15), the Christmas "order by Dec 14" date and the Cyber Monday end date are placeholders.
+- `promo.js` — strip (3 rotating messages, countdown, tap-to-copy code), effect (homepage hero / inside the product image),
+  round badge (product image + homepage "Get Tovi Today" blocks), product-page price callout, homepage hero label, button glow.
+  All settings are fixed; a floating tab at the bottom switches themes (remembered across pages).
+- URL: `?promo=sale|christmas|cybermonday|off`, `&controls=0` hides the floating tab. `?upsell=a|b|c` still picks the upsell flow.
+- `tools/inject_promo.py` wires the module into both pages.
 
-- **A** — checkbox block on the product page; ticking it bundles the cards with the main Add to cart.
-- **B** — no block on the page; after Add to cart, a drawer confirms Tovi was added and offers the cards (add, or skip to the cart).
-- **C** — no block on the page; after Add to cart, the cart page shows the same checkbox offer.
+## Run & QA
+    python3 -m http.server 8090        # from the repo root → http://127.0.0.1:8090
+    cd tools && npm install && npx playwright install chrome
+    node promo-qa.js                   # every theme × home/pdp × 390/768/1024/1440/1920: layout checks + screenshots in tools/qa-out/
+    node promo-switch.js               # floating tab: switching, memory across pages, URL params
 
-All flows end on a cart page that copies heytovi.com/cart (open it any time from the cart icon, or `#cart`).
-"Learn more" opens the cards popup. The cart is a demo only (saved in the browser), not connected to Shopify.
-
-Run locally: `python3 -m http.server` in this folder, then open http://localhost:8000.
+## Netlify
+`netlify.toml` publishes the repo root with no build. Connect this repo and set the production branch to `promotions`.

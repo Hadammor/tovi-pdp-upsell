@@ -1,0 +1,17 @@
+# Netlify: the site is the repo root (index.html = homepage, products/tovi/ = product page). No build step.
+# Deploy the `promotions` branch. tools/ (QA scripts) is not linked from the site.
+[build]
+  publish = "."
+  command = ""
+
+# /products/tovi → serve products/tovi/index.html without a redirect
+[[redirects]]
+  from = "/products/tovi"
+  to = "/products/tovi/index.html"
+  status = 200
+
+# keep the QA tooling and raw config out of the public site
+[[redirects]]
+  from = "/tools/*"
+  to = "/index.html"
+  status = 404

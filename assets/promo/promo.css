@@ -1,0 +1,184 @@
+/* Tovi promotions — styles (adapted from the Lumo promo module).
+   Brand base: Nunito (900 for display, 600–800 for body), charcoal #353535, Tovi yellow #ffb700, rounded 20px+ shapes.
+   Holiday colors arrive as --lp-* custom properties set by promo.js. */
+:root {
+  --lp-brand: #ffb700;
+  --lp-brand-ink: #353535;
+  --lp-accent: #ffb700;
+  --lp-accent2: #ffb700;
+  --lp-strip-h: 40px;
+  --lp-font-display: Nunito, var(--font-heading--family, sans-serif);
+  --lp-font-body: Nunito, var(--font-body--family, sans-serif);
+}
+@media (max-width: 749px) { :root { --lp-strip-h: 38px; } }
+
+/* ---------- top strip ---------- */
+.lp-strip {
+  position: relative;
+  z-index: 5;
+  background: var(--lp-strip-bg);
+  color: var(--lp-strip-text);
+  font-family: var(--lp-font-body);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  overflow: hidden;
+}
+.lp-strip::after { /* soft accent hairline under the strip */
+  content: ''; position: absolute; inset: auto 0 0 0; height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--lp-accent) 70%, transparent), transparent);
+}
+.lp-strip__inner {
+  position: relative;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  height: var(--lp-strip-h);
+  max-width: 1280px; margin: 0 auto; padding: 0 16px;
+}
+.lp-strip__icon { display: inline-flex; color: var(--lp-accent); flex: none; margin-right: 2px; }
+.lp-msg__text { overflow: hidden; text-overflow: ellipsis; }   /* inline text, so '$99, was…' keeps normal spacing */
+.lp-msg__text .lp-code { vertical-align: 1px; margin-left: 2px; }
+.lp-strip__icon svg { width: 18px; height: 18px; }
+.lp-rotator { position: relative; height: 100%; flex: 0 1 auto; min-width: 0; width: min(640px, 100%); }
+.lp-msg {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-weight: 800; letter-spacing: -0.01em;
+  opacity: 0; transform: translateY(100%);
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.45s ease;
+}
+.lp-msg.is-active { opacity: 1; transform: none; }
+.lp-msg.is-leaving { opacity: 0; transform: translateY(-100%); }
+.lp-msg b { font-family: var(--lp-font-display); font-weight: 900; color: inherit; text-decoration: underline; text-decoration-color: var(--lp-accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.lp-code {
+  font: 900 12px/1 var(--lp-font-display); letter-spacing: 0.06em;
+  color: inherit; background: color-mix(in srgb, var(--lp-accent) 22%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--lp-accent) 80%, transparent);
+  border-radius: 100px; padding: 5px 10px; cursor: copy;
+  transition: background 0.2s;
+}
+.lp-code:hover { background: color-mix(in srgb, var(--lp-accent) 38%, transparent); }
+.lp-code.is-copied { border-style: solid; }
+.lp-countdown { font-variant-numeric: tabular-nums; font-family: var(--lp-font-display); font-weight: 900; }
+.lp-countdown__label { font-family: var(--lp-font-body); font-weight: 700; opacity: 0.75; }
+.lp-countdown--pill {
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 13px; padding: 5px 12px; border-radius: 100px;
+  background: color-mix(in srgb, var(--lp-strip-text) 12%, transparent);
+}
+@media (max-width: 1099px) { .lp-countdown--pill { position: static; transform: none; flex: none; } }
+@media (max-width: 749px) {
+  .lp-strip { font-size: 13px; }
+  .lp-strip__inner { gap: 8px; padding: 0 12px; }
+  .lp-countdown--pill { display: none; }  /* on mobile the countdown joins the rotation instead */
+  .lp-code { font-size: 11px; padding: 4px 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-msg { transform: none !important; transition: opacity 0.3s; }
+}
+
+/* ---------- effects canvas ---------- */
+.lp-fx--contained { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; z-index: 2 !important; }
+.lp-fx { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 3; transition: opacity 0.2s linear; }
+
+/* ---------- round product badge ----------
+   Always Tovi yellow (not the holiday color), minimal, static. Holiday identity comes from its text. */
+.lp-badge {
+  --size: 100px;
+  --inset: 32px;   /* distance from the image's top/right edge */
+  position: absolute; z-index: 4; pointer-events: none;
+  top: var(--inset); right: var(--inset);
+  width: var(--size); height: var(--size); border-radius: 50%;
+  display: grid; place-items: center; text-align: center;
+  background: var(--lp-brand); color: var(--lp-brand-ink);
+  box-shadow: 0 10px 24px -10px rgb(53 53 53 / 0.45);
+  font-family: var(--lp-font-display);
+}
+.lp-badge__inner { display: flex; flex-direction: column; align-items: center; line-height: 1; gap: calc(var(--size) * 0.04); }
+.lp-badge__top {
+  font: 900 calc(var(--size) * 0.1) / 1 var(--lp-font-display);
+  text-transform: uppercase; letter-spacing: 0.06em; max-width: calc(var(--size) * 0.78);
+}
+.lp-badge__bottom { font: 700 calc(var(--size) * 0.1) / 1 var(--lp-font-body); letter-spacing: -0.01em; max-width: calc(var(--size) * 0.8); opacity: 0.85; }
+.lp-badge__main { font: 900 calc(var(--size) * 0.28) / 1 var(--lp-font-display); letter-spacing: -0.03em; }
+/* product page (our gallery) and homepage "Get Tovi Today" blocks: top-right corner of the product image */
+@media (max-width: 989px) { .lp-badge--pdp, .lp-badge--feature { --size: 88px; --inset: 26px; } }
+@media (max-width: 749px) { .lp-badge--pdp, .lp-badge--feature { --size: 72px; --inset: 18px; } }
+
+/* ---------- PDP price callout ---------- */
+.lp-callout {
+  display: flex; align-items: flex-start; gap: 8px;
+  width: fit-content; max-width: 100%;
+  margin: -4px 0 0; padding: 10px 14px;
+  border-radius: 16px;
+  font: 700 15px/1.35 var(--lp-font-body); letter-spacing: -0.01em; color: var(--lp-brand-ink);
+  background: color-mix(in srgb, var(--lp-accent) 14%, #fff);
+  border: 1px solid color-mix(in srgb, var(--lp-accent) 45%, transparent);
+}
+.lp-callout > span { flex: 1; min-width: 0; }
+.lp-callout .lp-code { display: inline-block; margin: 1px 0; color: var(--lp-brand-ink); }
+.lp-callout__icon { width: 18px; height: 18px; flex: none; margin-top: 1px; color: color-mix(in srgb, var(--lp-accent) 70%, #000); }
+.lp-callout b { font-family: var(--lp-font-display); font-weight: 900; }
+@media (max-width: 749px) { .lp-callout { font-size: 14px; } }
+
+/* ---------- homepage hero pill ---------- */
+.lp-hero-pill {
+  display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+  margin: 0 auto 12px; /* the Tovi hero headline is centred */ padding: 8px 16px 8px 12px;
+  border-radius: 100px;
+  font: 900 14px/1 var(--lp-font-display); color: var(--lp-brand-ink); letter-spacing: -0.01em;
+  background: rgb(255 255 255 / 0.82);
+  border: 1.5px solid color-mix(in srgb, var(--lp-accent) 75%, transparent);
+  box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--lp-accent) 80%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  position: relative; z-index: 4;
+}
+.lp-hero-pill svg { width: 18px; height: 18px; color: color-mix(in srgb, var(--lp-accent) 80%, #000); flex: none; }
+@media (max-width: 749px) { .lp-hero-pill { font-size: 12px; padding: 7px 13px 7px 10px; margin-bottom: 10px; } }
+
+/* ---------- CTA glow ---------- */
+.lp-glow main .button:not(.button-unstyled):not(.button-secondary):not(:disabled):not(.slideshow-control),
+.lp-glow main .btn.atc, .lp-glow main .feature .btn[data-atc] {
+  box-shadow: 0 0 0 0 transparent inset,
+              0 18px 28px -8px color-mix(in srgb, var(--lp-accent) 60%, transparent),
+              0 0 0 2px color-mix(in srgb, var(--lp-accent) 55%, transparent);
+  animation: lp-pulse 2.8s ease-in-out infinite;
+}
+@keyframes lp-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 transparent inset, 0 18px 28px -8px color-mix(in srgb, var(--lp-accent) 55%, transparent), 0 0 0 2px color-mix(in srgb, var(--lp-accent) 45%, transparent); }
+  50% { box-shadow: 0 0 0 0 transparent inset, 0 18px 34px -6px color-mix(in srgb, var(--lp-accent) 75%, transparent), 0 0 0 4px color-mix(in srgb, var(--lp-accent) 25%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .lp-glow .button, .lp-glow .btn { animation: none !important; } }
+
+/* ---------- floating theme switcher (demo tool, not part of the storefront) ----------
+   Three buttons, nothing else. Bottom-centre so it never covers the chat/cart corners. */
+.lps {
+  position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 2147483000;
+  display: flex; gap: 4px; padding: 5px;
+  background: rgb(35 35 35 / 0.9); border-radius: 100px;
+  box-shadow: 0 14px 34px -10px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.1) inset;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  font-family: var(--lp-font-display);
+}
+.lps-btn {
+  display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 16px 0 13px;
+  border: 0; border-radius: 100px; cursor: pointer; white-space: nowrap;
+  background: transparent; color: rgb(255 255 255 / 0.72);
+  font: 800 14px/1 var(--lp-font-display); letter-spacing: -0.01em;
+  transition: background 0.2s, color 0.2s;
+}
+.lps-btn svg { width: 17px; height: 17px; color: var(--ac); flex: none; }
+.lps-btn:hover { color: #fff; background: rgb(255 255 255 / 0.08); }
+.lps-btn[aria-pressed="true"] { background: #fff; color: #353535; }
+.lps-btn[aria-pressed="true"] svg { color: #353535; }
+.lps-btn:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+@media (max-width: 749px) {
+  .lps { bottom: 12px; max-width: calc(100vw - 24px); }
+  .lps-btn { height: 38px; padding: 0 12px 0 10px; font-size: 13px; gap: 6px; }
+}
+
+/* the product page's upsell-flow pill sits in the same bottom-centre spot — hide it while the theme tab shows
+   (upsell flows are still reachable with ?upsell=a|b|c), and lift the toast above the tab */
+.lps-shown .opt-switch { display: none !important; }
+.lps-shown .toast { bottom: 76px; }
