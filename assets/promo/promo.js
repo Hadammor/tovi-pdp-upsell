@@ -69,7 +69,7 @@
 
   function applyVars(t) {
     const r = document.documentElement.style, c = t.colors;
-    const vars = { '--lp-strip-bg': c.stripBg, '--lp-strip-text': c.stripText, '--lp-accent': c.accent, '--lp-accent2': c.accent2 };
+    const vars = { '--lp-strip-bg': c.stripBg, '--lp-strip-text': c.stripText, '--lp-accent': c.accent, '--lp-accent2': c.accent2, '--lp-strip-icon': c.icon || c.accent };
     Object.entries(vars).forEach(([k, v]) => r.setProperty(k, v));
     onCleanup(() => Object.keys(vars).forEach((k) => r.removeProperty(k)));
   }
@@ -180,7 +180,7 @@
       out: (p) => p.life > p.max,
       draw: (g, p, t) => { const a = Math.sin((p.life / p.max) * Math.PI) * (0.55 + 0.45 * Math.sin(t / 300 * p.sp + p.ph)); const s = p.s; g.globalAlpha = Math.max(0, a); g.fillStyle = p.col; g.beginPath();
         g.moveTo(p.x, p.y - s); g.quadraticCurveTo(p.x, p.y, p.x + s, p.y); g.quadraticCurveTo(p.x, p.y, p.x, p.y + s); g.quadraticCurveTo(p.x, p.y, p.x - s, p.y); g.quadraticCurveTo(p.x, p.y, p.x, p.y - s); g.fill(); } },
-    pixels: { base: 60, make: (W, H, init, c) => ({ x: Math.round(rand(0, W) / 14) * 14, y: init ? rand(-H, H) : rand(-60, -5), s: pick([3, 4, 5]), vy: rand(1.2, 3), col: pick([c.accent, c.accent, c.accent2, '#2f5bd3']) }),
+    pixels: { base: 60, make: (W, H, init, c) => ({ x: Math.round(rand(0, W) / 14) * 14, y: init ? rand(-H, H) : rand(-60, -5), s: pick([3, 4, 5]), vy: rand(1.2, 3), col: pick([c.accent, c.accent, c.accent2, '#7fc0ec']) }),
       step: (p) => { p.y += p.vy; },
       draw: (g, p) => { g.fillStyle = p.col; for (let i = 0; i < 4; i++) { g.globalAlpha = 0.7 - i * 0.17; g.fillRect(p.x, p.y - i * p.s * 2.2, p.s, p.s); } } },
   };
@@ -248,7 +248,7 @@
     nav.setAttribute('aria-label', 'Promotion theme');
     nav.innerHTML = ORDER.map((id) => {
       const t = THEMES[id];
-      return `<button type="button" class="lps-btn" data-theme="${id}" style="--ac:${t.colors.accent}">${icon(t.icon)}<span>${esc(t.name)}</span></button>`;
+      return `<button type="button" class="lps-btn" data-theme="${id}" style="--ac:${t.colors.tab || t.colors.icon || t.colors.accent}">${icon(t.icon)}<span>${esc(t.name)}</span></button>`;
     }).join('');
     document.body.appendChild(nav);
     document.documentElement.classList.add('lps-shown');   // the upsell-flow pill sits in the same spot

@@ -25,9 +25,9 @@
   line-height: 1.2;
   overflow: hidden;
 }
-.lp-strip::after { /* soft accent hairline under the strip */
+.lp-strip::after { /* flat hairline under the strip (Tovi's style is flat, no gradients) */
   content: ''; position: absolute; inset: auto 0 0 0; height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--lp-accent) 70%, transparent), transparent);
+  background: color-mix(in srgb, var(--lp-strip-icon, var(--lp-accent)) 45%, transparent);
 }
 .lp-strip__inner {
   position: relative;
@@ -35,7 +35,7 @@
   height: var(--lp-strip-h);
   max-width: 1280px; margin: 0 auto; padding: 0 16px;
 }
-.lp-strip__icon { display: inline-flex; color: var(--lp-accent); flex: none; margin-right: 2px; }
+.lp-strip__icon { display: inline-flex; color: var(--lp-strip-icon, var(--lp-accent)); flex: none; margin-right: 2px; }
 .lp-msg__text { overflow: hidden; text-overflow: ellipsis; }   /* inline text, so '$99, was…' keeps normal spacing */
 .lp-msg__text .lp-code { vertical-align: 1px; margin-left: 2px; }
 .lp-strip__icon svg { width: 18px; height: 18px; }
@@ -59,6 +59,9 @@
   transition: background 0.2s;
 }
 .lp-code:hover { background: color-mix(in srgb, var(--lp-accent) 38%, transparent); }
+/* on the strip the chip follows the strip's icon colour (readable on every strip background) */
+.lp-strip .lp-code { background: color-mix(in srgb, var(--lp-strip-icon, var(--lp-accent)) 22%, transparent); border-color: color-mix(in srgb, var(--lp-strip-icon, var(--lp-accent)) 85%, transparent); }
+.lp-strip .lp-code:hover { background: color-mix(in srgb, var(--lp-strip-icon, var(--lp-accent)) 38%, transparent); }
 .lp-code.is-copied { border-style: solid; }
 .lp-countdown { font-variant-numeric: tabular-nums; font-family: var(--lp-font-display); font-weight: 900; }
 .lp-countdown__label { font-family: var(--lp-font-body); font-weight: 700; opacity: 0.75; }
